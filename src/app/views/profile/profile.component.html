@@ -1,0 +1,16 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-md="400px" fxFlex.gt-sm="50">
+        <mat-card class="profile-sidebar mb-1 pb-0">
+            <div class="propic text-center">
+                <img alt="" [src]="auth.user?.profile_photo? auth.user?.profile_photo: 'assets/avatars/default.png'">
+            </div>
+            <div class="profile-title text-center mb-1">
+                <div class="main-title">{{auth.user.first_name}} <b>{{auth.user.last_name}}</b></div>
+                <div class="subtitle mb-05">
+                    <span class="text-muted text-small m-0"><mat-icon class="text-muted">mail</mat-icon> {{auth.user.email}}</span><br>
+                    <span class="text-muted text-small m-0"><mat-icon class="text-muted">call</mat-icon> {{auth.user.phone_number}}</span>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

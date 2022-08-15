@@ -1,0 +1,55 @@
+<div fxLayout="column">
+    <mat-card class="p-1" fxFlex="100">
+        <mat-card-title>
+            <p class="font-weight-bold text-blue">Summary</p>
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content fxLayout [@animate]="{value:'*',params:{delay:'600ms',scale:'.9'}}">
+            <div *ngIf="status.KES > 0" fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                <mat-card class="rounded-circle" fxLayout="column" fxLayoutAlign="center center">
+                    <p class="m-0 text-14 text-muted line-height-1">Ksh Collections</p>
+                    <p class="text-18 font-weight-bold text-black">{{status.KES | format:'KES'}}</p>
+                </mat-card>
+            </div>
+            <div *ngIf="status.UGX > 0" fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                <mat-card class="rounded-circle" fxLayout="column" fxLayoutAlign="center center">
+                    <p class="m-0 text-14 text-muted line-height-1">USh Collections</p>
+                    <p class="text-18 font-weight-bold text-green">{{status.UGX | format:'UGX'}}</p>
+                </mat-card>
+            </div>
+            <div *ngIf="status.RWF > 0" fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                <mat-card class="rounded-circle" fxLayout="column" fxLayoutAlign="center center">
+                    <p class="m-0 text-14 text-muted line-height-1">RFw Collections</p>
+                    <p class="text-18 font-weight-bold text-orange">{{status.RWF | format:'RWF'}}</p>
+                </mat-card>
+            </div>
+            <div *ngIf="status.USD > 0" fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                <mat-card class="rounded-circle" fxLayout="column" fxLayoutAlign="center center">
+                    <p class="m-0 text-14 text-muted line-height-1">USD Collections</p>
+                    <p class="text-18 font-weight-bold text-red">{{status.USD | format:'USD'}}</p>
+                </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="p-1" fxFlex="100">
+        <mat-card-title>
+            <p class="font-weight-bold text-orange">Breakdown</p>
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <mat-list role="list">
+                <mat-list-item fxFlex="100" fxLayout="column" *ngFor="let item of charges | paginate: { id: 'order_paginator', itemsPerPage: 50, currentPage: page, totalItems: pagination?.count }" role="listitem">
+                    <p mat-line>{{item.amount|format:item.amount_currency}}</p>
+                    <p mat-line class="text-small text-muted">
+                        {{item.description}}
+                        <span fxFlex></span>
+                        <span class="text-muted text-small">{{item.created | date}}</span>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+            <div *ngIf="!loading" class="text-center">
+                <pagination-controls (pageChange)="getPage($event)" id="order_paginator"></pagination-controls>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

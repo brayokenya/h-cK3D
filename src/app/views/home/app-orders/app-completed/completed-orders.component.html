@@ -1,0 +1,134 @@
+<mat-toolbar *ngIf="!loading" class="inbox-toolbar">
+    <mat-checkbox (change)="selectToggleAll()" class="inbox-toggle-all mr-1">
+        <small>Select All</small>
+    </mat-checkbox>
+    <span fxFlex></span>
+    <div fxHide.lt-sm="true" class="search-bar">
+        <div class="top-search-form">
+            <input [(ngModel)]="searchQuery" placeholder="Search" type="search"/>
+            <button mat-icon-button aria-label="Search" (click)="onSearch()">
+                <mat-icon role="img">search</mat-icon>
+            </button>
+        </div>
+    </div>
+    <button mat-icon-button matTooltip="Filter" (click)="launchFilterDialog()">
+        <mat-icon>filter_list</mat-icon>
+    </button>
+    <button *ngIf="selectedOrders?.length > 0" (click)="$event.stopPropagation()" [matMenuTriggerFor]="actionMenu" class="hidden-on-open" mat-icon-button>
+        <mat-icon class="text-muted">more_vert</mat-icon>
+    </button>
+    <mat-menu #actionMenu="matMenu">
+        <button (click)="resendSelected()" mat-menu-item>
+            <mat-icon>message</mat-icon>
+            Resend
+        </button>
+    </mat-menu>
+</mat-toolbar>
+<mat-toolbar *ngIf="loading" class="inbox-toolbar">
+    <mat-spinner [diameter]="35" color="accent"></mat-spinner>
+</mat-toolbar>
+<mat-accordion class="accordion-headers-align">
+    <mat-expansion-panel *ngFor="let order of orders | paginate: { id: 'order_paginator', itemsPerPage: 50, currentPage: page, totalItems: pagination?.count }" hideToggle="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-checkbox (click)="stopProp($event); filterOrderSelection();" [(ngModel)]="order.selected" class="mr-1 mail-checkbox hide-on-open"></mat-checkbox>
+                <div class="hide-on-open" fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="column">
+                        <span class="m-0">{{order.order_number}}</span>
+                        <small class="text-muted m-0">{{order.order_status}}</small>
+                    </div>
+                </div>
+                <div class="show-on-open" fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="column">
+                        <span class="m-0">{{order.order_number}}</span>
+                        <small class="text-muted m-0">{{order.order_status}}</small>
+                    </div>
+                </div>
+            </mat-panel-title>
+            <mat-panel-description>
+                        <span class="mail-subject text-sm mat-color-default">
+                            Amount: <strong>{{order.order_amount | format:order.currency}}</strong><br>
+                            Balance: <strong>{{order.order_balance | format:order.currency}}</strong>
+                        </span>
+                <span fxFlex></span>
+                <span class="text-sm" fxHide.lt-sm="true">{{order.created | relativeTime}}</span>
+                <button (click)="$event.stopPropagation()" [matMenuTriggerFor]="orderMenu" class="hidden-on-open" mat-icon-button>
+                    <mat-icon class="text-muted">more_vert</mat-icon>
+                </button>
+                <mat-menu #orderMenu="matMenu">
+                    <button *ngIf="!order.flag_email_sent || !order.flag_sms_sent" (click)="resendOrder(order)" mat-menu-item>
+                        <mat-icon>message</mat-icon>
+                        Resend
+                    </button>
+                </mat-menu>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="message-text">
+            <mat-card class="user-card pt-1 mat-elevation-z0">
+                <mat-card-title>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 1 0%">
+                            <div fxLayout="column" fxLayoutGap="8px" fxFlex="1 1 0%">
+                                <span class="m-0">Order Number: {{order.order_number}}</span>
+                                <span class="text-muted text-small m-0">Payment Method: {{order.payment_method}}</span>
+                            </div>
+                            <span fxFlex></span>
+                            <span class="text-sm">Date: {{order.created | date}}</span>
+                        </div>
+                    </div>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-divider></mat-divider>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <a href="" class="toolbar-avatar md mr-1"><img src="assets/avatars/default.png" alt=""></a>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 1 0%">
+                            <div fxLayout="column" fxLayoutGap="8px" fxFlex="1 1 0%">
+                                <span class="text-small m-0"><mat-icon class="text-muted">person</mat-icon>{{order.customer.name}}</span>
+                                <span class="text-muted text-small m-0"><mat-icon class="text-muted">mail</mat-icon> {{order.customer.email}}</span>
+                                <span class="text-muted text-small m-0"><mat-icon class="text-muted">call</mat-icon> {{order.customer.phone_number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <mat-table [dataSource]="order.order_detail">
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                            <mat-cell *matCellDef="let item" data-label="id">
+                                <div fxLayout="row">{{item.name}}</div>
+                                <div fxLayout="row" *ngIf="item.type_name == 'store.ticket'">({{item.event_name}})</div>
+                                <div fxLayout="row" *ngIf="item.type_name != 'store.ticket'">({{item?.name}})</div>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="unit_price">
+                            <mat-header-cell *matHeaderCellDef>Unit Cost</mat-header-cell>
+                            <mat-cell *matCellDef="let item" data-label="price">
+                                {{ item.unit_price | format:order.currency }}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="item_quantity">
+                            <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                            <mat-cell *matCellDef="let item" data-label="quantity">
+                                {{ item.item_quantity }}
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="['name', 'unit_price', 'item_quantity']"></mat-header-row>
+                        <mat-row *matRowDef=" let item; columns: ['name', 'unit_price', 'item_quantity']"></mat-row>
+                    </mat-table>
+                    <div class="form-total-cost" fxLayout="column" fxLayoutAlign="center end" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Total:</span>
+                            <span>{{ order.order_amount | format:order.currency }}</span>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Balance:</span>
+                            <span><strong>{{ order.order_balance | format:order.currency }}</strong></span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+<div *ngIf="!loading" class="text-center">
+    <pagination-controls (pageChange)="getPage($event)" id="order_paginator"></pagination-controls>
+</div>

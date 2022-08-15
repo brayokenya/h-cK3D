@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Complete Order {{data.order.order_number}}</h1>
+<div mat-dialog-content>
+    <p>Please enter amount received in {{data.order.currency | humanize:'currency'}}.</p>
+    <mat-form-field style="width: 100%">
+        <span matPrefix>{{data.order.currency | humanize:'currency'}} &nbsp;</span>
+        <input type="number" matInput [(ngModel)]="data.amount">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data.amount" (click)="onOkClick()" cdkFocusInitial>Complete</button>
+</div>

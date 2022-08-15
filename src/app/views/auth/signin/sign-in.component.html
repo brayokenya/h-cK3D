@@ -1,0 +1,39 @@
+<div class="login-page">
+    <div class="content">
+        <form [formGroup]="loginForm">
+            <mat-card class="login-form">
+                <mat-toolbar color="primary">
+                    <span>Mookh Agent: LOGIN</span>
+                </mat-toolbar>
+                <mat-card-content>
+                    <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input #email matInput name="email" placeholder="Email" [formControl]="emailFormControl" [errorStateMatcher]="inputErrorMatcher">
+                        <mat-hint>Please enter your admin email</mat-hint>
+                        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required') && emailFormControl.dirty">Enter a valid email address</mat-error>
+                        <mat-error *ngIf="emailFormControl.hasError('required') && emailFormControl.dirty">Email is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input #password matInput name="password" placeholder="Password" [formControl]="emailFormControl" [errorStateMatcher]="inputErrorMatcher" [type]="hide ? 'password' : 'text'">
+                        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-hint>Enter your password</mat-hint>
+                        <mat-error *ngIf="passwordFormControl.hasError('required') && passwordFormControl.dirty">Password is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                    <mat-error *ngIf="error">{{error}}</mat-error>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button (click)="login(email.value, password.value, remember.checked)" color="primary" type="submit" mat-raised-button>
+                        LOGIN
+                        <mat-icon *ngIf="attemptingLogin">
+                            <mat-spinner color="accent" diameter="20"></mat-spinner>
+                        </mat-icon>
+                    </button>
+                    <mat-checkbox #remember class="ml-1">
+                        Remember me?
+                    </mat-checkbox>
+                </mat-card-actions>
+            </mat-card>
+        </form>
+    </div>
+</div>

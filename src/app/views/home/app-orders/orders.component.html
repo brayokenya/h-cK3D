@@ -1,0 +1,47 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
+        <mat-card class="mb-1 pb-0">
+            <mat-card-header>
+                <h3 mat-card-title>Orders</h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-nav-list>
+                    <h3 mat-subheader>Categories</h3>
+                    <mat-divider></mat-divider>
+                    <a mat-list-item [routerLink]="'/home/orders/all'" routerLinkActive="active-list-item">
+                        <mat-icon>view_list</mat-icon>
+                        <span class="ml-05 font-weight-bold">All</span>
+                    </a>
+                    <mat-divider></mat-divider>
+                    <a mat-list-item [routerLink]="'/home/orders/completed'" routerLinkActive="active-list-item">
+                        <mat-icon>check_circle_outline</mat-icon>
+                        <span class="ml-05 font-weight-bold">Completed</span>
+                    </a>
+                    <mat-divider></mat-divider>
+                    <a mat-list-item [routerLink]="'/home/orders/pending'" routerLinkActive="active-list-item">
+                        <mat-icon>info</mat-icon>
+                        <span class="ml-05 font-weight-bold">Pending</span>
+                    </a>
+                    <mat-divider></mat-divider>
+                    <a mat-list-item [routerLink]="'/home/orders/reversed'" routerLinkActive="active-list-item">
+                        <mat-icon>block</mat-icon>
+                        <span class="ml-05 font-weight-bold">Reversed</span>
+                    </a>
+                    <h3 mat-subheader>Management</h3>
+                    <a mat-list-item [routerLink]="'/home/orders/collections'" routerLinkActive="active-list-item">
+                        <mat-icon>credit_card</mat-icon>
+                        <span class="ml-05 font-weight-bold">Collections</span>
+                    </a>
+                    <mat-divider></mat-divider>
+                    <a mat-list-item [routerLink]="'/home/orders/remittances'" routerLinkActive="active-list-item">
+                        <mat-icon>local_atm</mat-icon>
+                        <span class="ml-05 font-weight-bold">Remittances</span>
+                    </a>
+                </mat-nav-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
+        <router-outlet></router-outlet>
+    </div>
+</div>

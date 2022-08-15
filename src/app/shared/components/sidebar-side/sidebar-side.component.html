@@ -1,0 +1,50 @@
+<div class="sidebar-panel">
+    <div id="scroll-area" [perfectScrollbar] class="navigation-hold" fxLayout="column">
+        <div class="sidebar-hold">
+            <div class="branding">
+                <img src="assets/favicon/apple-icon-180x180.png" alt="" class="app-logo">
+                <span class="app-logo-text">Mookh Agents</span>
+                <span style="margin: auto" *ngIf="layoutConf.sidebarStyle !== 'compact'"></span>
+                <div class="sidebar-compact-switch" [ngClass]="{active: layoutConf.sidebarCompactToggle}" (click)="toggleCollapse()" *ngIf="layoutConf.sidebarStyle !== 'compact'"><span></span></div>
+            </div>
+            <div class="app-user">
+                <div class="app-user-photo">
+                    <img *ngIf="auth.user.profile_photo" [src]="auth.user.profile_photo" class="mat-elevation-z1" alt="">
+                    <img *ngIf="!auth.user.profile_photo" src="assets/avatars/default.png" class="mat-elevation-z1" alt="">
+                </div>
+                <span class="app-user-name mb-05">
+                    <mat-icon class="icon-xs text-muted">lock</mat-icon>
+                    {{auth.user.first_name}} {{auth.user.last_name}}
+                </span>
+                <div class="app-user-controls">
+                    <button class="text-muted" mat-icon-button mat-xs-button [matMenuTriggerFor]="appUserMenu">
+                        <mat-icon>settings</mat-icon>
+                    </button>
+                    <button
+                        class="text-muted"
+                        mat-icon-button
+                        mat-xs-button
+                        matTooltip="Sign Out"
+                        routerLink="/auth/signout">
+                        <mat-icon>exit_to_app</mat-icon>
+                    </button>
+                    <mat-menu #appUserMenu="matMenu">
+                        <button mat-menu-item routerLink="/home/profile/">
+                            <mat-icon>account_box</mat-icon>
+                            <span>Profile</span>
+                        </button>
+                        <button mat-menu-item routerLink="/home/profile/settings">
+                            <mat-icon>settings</mat-icon>
+                            <span>Account Settings</span>
+                        </button>
+                        <button mat-menu-item routerLink="/auth/signin">
+                            <mat-icon>exit_to_app</mat-icon>
+                            <span>Sign out</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+            <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
+        </div>
+    </div>
+</div>

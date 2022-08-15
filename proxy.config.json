@@ -1,0 +1,26 @@
+{
+    "/api/*": {
+        "target": "https://api.mymookh.com",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    },
+    "/authenticate/*": {
+        "target": "https://api.mymookh.com",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    },
+    "/auth/*": {
+        "target": "https://.mymookh.com",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    },
+    "/live/*": {
+        "target": "https://api.mymookh.com",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
+}

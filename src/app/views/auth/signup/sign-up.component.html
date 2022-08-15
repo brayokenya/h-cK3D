@@ -1,0 +1,41 @@
+<div [perfectScrollbar]="{}" class="height-100vh signup-wrap" fxLayout="row wrap" fxLayoutAlign="center center">
+    <div
+        [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'100ms', duration: '400ms'}}"
+        class="signup-container mat-elevation-z4"
+        fxFlex="60"
+        fxFlex.sm="80"
+        fxFlex.xs="94"
+        fxLayout="row wrap"
+        fxLayout.xs="column"
+        fxLayoutAlign="start stretch">
+        <!-- Left Side content -->
+        <div class="signup-header grey-200" fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+            <div class="" fxLayout="row wrap" fxLayoutAlign="center center">
+                <img alt="" src="assets/images/illustrations/posting_photo.svg" width="200px">
+            </div>
+        </div>
+        <!-- Right side content -->
+        <div fxFlex="60" fxLayout="row wrap" fxLayoutAlign="center center">
+            <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm" class="signup-form white">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Username</mat-label>
+                    <input formControlName="username" matInput name="username" placeholder="Username" type="text"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" matInput name="email" placeholder="Email" type="email"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input formControlName="password" matInput name="password" placeholder="********" type="password"/>
+                </mat-form-field>
+                <mat-checkbox formControlName="agreed">I agree with terms and condtions</mat-checkbox>
+                <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <button color="primary" mat-flat-button>Sign Up</button>
+                    <span style="padding: 0px 8px 0px 16px;">or</span>
+                    <a class="font-weight-bold mat-color-primary" [routerLink]="'/auth/signin/'">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
