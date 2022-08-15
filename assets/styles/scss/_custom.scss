@@ -1,0 +1,21 @@
+.active-list-item {
+    color: #2199e8 !important;
+}
+
+.accordion-headers-align .mat-expansion-panel-header-title,
+.accordion-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+}
+
+.accordion-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type=search]::-ms-clear {display: none; width: 0; height: 0}
+input[type=search]::-ms-reveal {display: none; width: 0; height: 0}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {display: none}
