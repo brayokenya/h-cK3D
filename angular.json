@@ -123,5 +123,8 @@
             }
         }
     },
-    "defaultProject": "mookh-admin"
+    "defaultProject": "mookh-admin",
+    "cli": {
+      "analytics": "b5c3f592-fe4e-4664-b6e1-b8e41aac91e9"
+    }
 }
